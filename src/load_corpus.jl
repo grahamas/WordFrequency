@@ -40,10 +40,11 @@ function parse_word_frequencies!(freqs, filepath)
 end
 
 function parse_words(text)
-    @> text begin
-        replace("---" => "—", "--" => "—", "..." => "—")
-        split(x -> (isspace(x) || x == "—" || x == "–"))
-        words -> strip.(!isletter, words)
-        lowercase.()
+    @as t text begin
+        replace(t, "---" => "—", "--" => "—", "..." => "—")
+        split(t, x -> (isspace(x) || x == '—' || x == '–'))
+        strip.(!isletter, t)
+        filter(x -> length(x) > 1, t)
+        lowercase.(t)
     end
 end
